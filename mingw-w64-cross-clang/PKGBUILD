@@ -133,6 +133,8 @@ package() {
     make -C ../build-libcxx-static-${_target}/projects/libunwind DESTDIR="${pkgdir}" install
     install "${srcdir}/build-libcxx-static-${_target}/lib/libunwind.dll" "${pkgdir}/opt/${_target}/bin/libunwind.dll"
 
+    find "${pkgdir}/opt/${_target}" -name '*.a' -exec llvm-ranlib '{}' \;
+
     _prefix="${pkgdir}/opt/${_target}/bin"
     for tool in addr2line ar dlltool nm objcopy objdump ranlib rc readelf readobj strings strip; do
       printf "#!/bin/bash\n\n/usr/bin/llvm-${tool} \$@" | tee "${_prefix}/${tool}" "${_prefix}/${_target}-${tool}" > /dev/null
