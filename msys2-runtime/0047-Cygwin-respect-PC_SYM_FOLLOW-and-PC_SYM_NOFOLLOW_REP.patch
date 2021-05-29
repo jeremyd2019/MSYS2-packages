@@ -1,0 +1,62 @@
+From 7f0c0f5c66d201f69e360ae9fccc4bb893251713 Mon Sep 17 00:00:00 2001
+From: Jeremy Drake <github@jdrake.com>
+Date: Sat, 29 May 2021 11:48:11 -0700
+Subject: [PATCH 47/N] Cygwin: respect PC_SYM_FOLLOW and PC_SYM_NOFOLLOW_REP
+ with inner links.
+
+The new GetFinalPathNameW handling for native symlinks in inner path
+components is disabled if caller doesn't want to follow symlinks, or
+doesn't want to follow reparse points.  Set flag to not follow reparse
+points in chdir, allowing native processes to see their cwd potentially
+including native symlinks, rather than dereferencing them.
+---
+ winsup/cygwin/path.cc | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/winsup/cygwin/path.cc b/winsup/cygwin/path.cc
+index 68b0a8d..7ade2eb 100644
+--- a/winsup/cygwin/path.cc
++++ b/winsup/cygwin/path.cc
+@@ -723,9 +723,10 @@ path_conv::check (const char *src, unsigned opt,
+ 	  int symlen = 0;
+ 
+ 	  /* Make sure to check certain flags on last component only. */
+-	  for (unsigned pc_flags = opt & (PC_NO_ACCESS_CHECK | PC_KEEP_HANDLE);
++	  for (unsigned pc_flags = opt & (PC_NO_ACCESS_CHECK | PC_KEEP_HANDLE
++					 | PC_SYM_FOLLOW | PC_SYM_NOFOLLOW_REP);
+ 	       ;
+-	       pc_flags = 0)
++	       pc_flags = opt & (PC_SYM_FOLLOW | PC_SYM_NOFOLLOW_REP))
+ 	    {
+ 	      const suffix_info *suff;
+ 	      char *full_path;
+@@ -3604,6 +3605,8 @@ restart:
+ 	    break;
+ 	}
+ 
++      if ((pc_flags & (PC_SYM_FOLLOW | PC_SYM_NOFOLLOW_REP)) == PC_SYM_FOLLOW)
++      {
+       /* Check if the inner path components contain native symlinks or
+ 	 junctions, or if the drive is a virtual drive.  Compare incoming
+ 	 path with path returned by GetFinalPathNameByHandleA.  If they
+@@ -3682,6 +3685,7 @@ restart:
+ 	      }
+ 	  }
+       }
++      }
+ 
+     /* Normal file. */
+     file_not_symlink:
+@@ -3864,7 +3868,8 @@ chdir (const char *in_dir)
+ 
+       /* Convert path.  PC_NONULLEMPTY ensures that we don't check for
+ 	 NULL/empty/invalid again. */
+-      path_conv path (in_dir, PC_SYM_FOLLOW | PC_POSIX | PC_NONULLEMPTY);
++      path_conv path (in_dir, PC_SYM_FOLLOW | PC_POSIX | PC_NONULLEMPTY
++			      | PC_SYM_NOFOLLOW_REP);
+       if (path.error)
+ 	{
+ 	  set_errno (path.error);
+-- 
+2.32.0.windows.1
+
