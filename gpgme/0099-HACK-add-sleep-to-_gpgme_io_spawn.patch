@@ -1,0 +1,15 @@
+--- gpgme-1.23.2/src/posix-io.c.orig	2023-02-01 08:50:48.000000000 -0800
++++ gpgme-1.23.2/src/posix-io.c	2024-05-20 11:12:27.266523800 -0700
+@@ -673,7 +673,11 @@
+       if (pid == -1)
+ 	_exit (1);
+       else
+-	_exit (0);
++        {
++          static const struct timespec ts = {0, 1000000};
++          nanosleep(&ts, NULL);
++	  _exit (0);
++        }
+     }
+ 
+   TRACE_LOG  ("waiting for child process pid=%i", pid);
