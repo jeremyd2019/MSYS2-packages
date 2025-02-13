@@ -3,13 +3,13 @@
 pkgbase=curl
 pkgname=('curl' 'libcurl' 'libcurl-devel')
 pkgver=8.12.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Multi-protocol file transfer utility"
 arch=('i686' 'x86_64')
 url="https://curl.se/"
 license=('spdx:MIT')
 depends=('ca-certificates')
-makedepends=('heimdal-devel' 'libcrypt-devel' 'libidn2-devel'
+makedepends=('heimdal-devel' 'libxcrypt-devel' 'libidn2-devel'
              'libnghttp2-devel' 'libpsl-devel' 'libssh2-devel' 'openssl-devel' 'zlib-devel') #  'libcares-devel'
 options=('!libtool' 'strip' '!debug')
 source=("https://github.com/curl/curl/releases/download/${pkgbase}-${pkgver//./_}/${pkgbase}-${pkgver}.tar.bz2"{,.asc}
@@ -53,7 +53,7 @@ build() {
 }
 
 package_curl() {
-  depends=('ca-certificates' 'libcurl' 'libcrypt'
+  depends=('ca-certificates' 'libcurl' 'libxcrypt'
            'libnghttp2' 'libpsl' 'openssl' 'zlib')
   groups=('base')
 
@@ -67,7 +67,7 @@ package_curl() {
 
 package_libcurl() {
   pkgdesc="Multi-protocol file transfer library (runtime)"
-  depends=('ca-certificates' 'heimdal-libs' 'libcrypt' 'libidn2'
+  depends=('ca-certificates' 'heimdal-libs' 'libxcrypt' 'libidn2'
           'libnghttp2' 'libpsl' 'libssh2' 'openssl' 'zlib') #'libcares'
   groups=('libraries')
 
@@ -77,7 +77,7 @@ package_libcurl() {
 
 package_libcurl-devel() {
   pkgdesc="Libcurl headers and libraries"
-  depends=("libcurl=${pkgver}" 'heimdal-devel' 'libcrypt-devel' 'libidn2-devel'
+  depends=("libcurl=${pkgver}" 'heimdal-devel' 'libxcrypt-devel' 'libidn2-devel'
            'libnghttp2-devel' 'libpsl-devel' 'libssh2-devel' 'openssl-devel' 'zlib-devel') #'libcares-devel'
   options=('staticlibs')
   groups=('development')

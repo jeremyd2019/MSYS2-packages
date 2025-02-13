@@ -6,7 +6,7 @@ _topver=9.0
 _patchlevel=2121
 _versiondir="${pkgname}${_topver//./}"
 pkgver=${_topver}.${_patchlevel}
-pkgrel=1
+pkgrel=2
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor'
 arch=('i686' 'x86_64')
 license=('custom:vim')
@@ -14,8 +14,9 @@ url="https://www.vim.org"
 depends=('ncurses' 'libiconv' 'libintl')
 groups=('editors')
 makedepends=('gawk' 'ncurses-devel' 'gcc'
+             'perl-devel' 'python-devel' 'ruby' 'autotools' 'libxcrypt-devel'
              'libiconv-devel' 'gettext-devel') # To satisfy python3/dyn feature #3052
-source=(${pkgname}-${pkgver}.tar.gz::https://github.com/vim/vim/archive/v${pkgver}/${pkgbase}-{pkgver}.tar.gz
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/vim/vim/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz
         'dot.vimrc'
         '7.3-cygwin-mouse.patch'
         '7.3-virc.patch'
@@ -31,13 +32,6 @@ sha256sums=('8d04737e71f529b37f18ec26a16a11ef183bb83b214f4e6ddddf20136c5813ea'
             '5fcec194d2fcb2a624358d8ce074e8d97b873b5c2fff2118491b57a4880737d9'
             'b98b4807d6c2011836191bddce1e28b22c44649e7059af646d25187d13eea549'
             'bdca6069ef0fa995718f4b59fea85e58629259bb5a385d53e52d162d1463d4ff')
-if [ "${CARCH}" == 'x86_64' ]; then
-       # Git for Windows' i686-bit SDK does not have the `autotools` package
-       makedepends+=('perl-devel' 'python-devel' 'ruby' 'autotools' 'libxcrypt-devel')
-       depends+=('libxcrypt')
-elif [ "${CARCH}" == 'i686' ]; then
-       makedepends+=('libcrypt-devel')
-fi
 
 prepare() {
   cd ${srcdir}/${pkgname}-${pkgver}

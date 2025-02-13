@@ -3,14 +3,14 @@
 _realname=Clone
 pkgname=perl-${_realname}
 pkgver=0.46
-pkgrel=1
+pkgrel=2
 pkgdesc='Recursive copy of nested objects.'
 arch=('i686' 'x86_64')
 url='https://search.cpan.org/~RDF/Clone'
 groups=('perl-modules')
 license=('GPL' 'PerlArtistic')
 depends=('perl')
-makedepends=('libcrypt-devel' 'gcc' 'make')
+makedepends=('libxcrypt-devel' 'gcc' 'make')
 options=('!emptydirs')
 source=("https://search.cpan.org/CPAN/authors/id/G/GA/GARU/${_realname}-${pkgver}.tar.gz")
 sha512sums=('f8bb1010364e94c7cc8bba25681cd9fd737ec2935a8be960ac53099359729fc679190a115dd082fccd239b35762dee2b3be3adbddce37e4ceae6fe934fbad545')

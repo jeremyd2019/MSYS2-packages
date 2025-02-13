@@ -2,14 +2,14 @@
 
 pkgname=perl
 pkgver=5.38.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A highly capable, feature-rich programming language"
 arch=(i686 x86_64)
 license=('GPL')
 url="https://www.perl.org/"
 groups=('base-devel')
-depends=('libcrypt' 'coreutils' 'msys2-runtime' 'sh')
-makedepends=('libcrypt-devel')
+depends=('libxcrypt' 'coreutils' 'msys2-runtime' 'sh')
+makedepends=('libxcrypt-devel')
 source=(https://www.cpan.org/src/5.0/perl-${pkgver}.tar.xz
         perlbin.sh
         perlbin.csh

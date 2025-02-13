@@ -3,14 +3,14 @@
 _realname=XML-Parser
 pkgname=perl-${_realname}
 pkgver=2.46
-pkgrel=7
+pkgrel=8
 pkgdesc="Expat-based XML parser module for perl"
 arch=('i686' 'x86_64')
 license=('GPL' 'PerlArtistic')
 url="http://search.cpan.org/dist/${_realname}/"
 groups=('perl-modules')
-depends=('perl' 'libexpat' 'libcrypt')
-makedepends=('libexpat-devel' 'libcrypt-devel')
+depends=('perl' 'libexpat' 'libxcrypt')
+makedepends=('libexpat-devel' 'libxcrypt-devel')
 replaces=('perlxml')
 provides=("perlxml=${pkgver}")
 options=('!emptydirs')
